@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>مولّد سكربت MikroTik Load Balancing</title>
+  <style>
+    :root{
+      --bg:#f4f8fb;--card:#fff;--text:#0f172a;--muted:#64748b;--line:#e2e8f0;--primary:#0284c7;--primary2:#0369a1;--dark:#020617;--ok:#059669;--warn:#d97706;--danger:#dc2626;
+      --shadow:0 18px 45px rgba(15,23,42,.10);--radius:26px
+    }
+    *{box-sizing:border-box} body{margin:0;font-family:Arial,Tahoma,sans-serif;background:linear-gradient(135deg,#f8fafc,#e0f2fe,#f1f5f9);color:var(--text)}
+    .wrap{max-width:1450px;margin:auto;padding:28px}.hero{background:radial-gradient(circle at top left,#0ea5e9 0,#020617 34%,#020617 100%);color:white;border-radius:34px;padding:34px;box-shadow:var(--shadow);overflow:hidden;position:relative}.hero:after{content:"";position:absolute;inset:auto -120px -160px auto;width:360px;height:360px;background:rgba(14,165,233,.18);border-radius:999px}.hero-grid{display:grid;grid-template-columns:1fr 430px;gap:26px;align-items:center;position:relative;z-index:1}.badge{display:inline-flex;gap:8px;align-items:center;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.16);padding:9px 15px;border-radius:999px;color:#dbeafe;font-size:14px}.hero h1{font-size:44px;line-height:1.25;margin:18px 0 10px;font-weight:900}.hero p{color:#cbd5e1;line-height:1.9;margin:0;max-width:880px}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.stat{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:22px;padding:20px;text-align:center}.stat b{display:block;font-size:28px}.stat span{font-size:12px;color:#cbd5e1}.grid{display:grid;grid-template-columns:1fr 1.08fr;gap:24px;margin-top:24px}.card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:24px}.card-title{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;margin-bottom:18px}.card h2{margin:0;font-size:22px}.card p{margin:6px 0 0;color:var(--muted);font-size:14px;line-height:1.7}.tabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}.tab{border:1px solid var(--line);background:white;color:#475569;padding:10px 16px;border-radius:14px;font-weight:700;cursor:pointer}.tab.active{background:var(--primary);color:white;box-shadow:0 10px 24px rgba(2,132,199,.22)}.section{display:none}.section.active{display:block}.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}.field{display:block}.field span{display:block;font-weight:800;color:#334155;font-size:14px;margin-bottom:8px}.hint{display:block!important;font-size:12px!important;color:var(--muted)!important;font-weight:400!important;line-height:1.6;margin-top:6px!important}.input,select,textarea{width:100%;border:1px solid var(--line);background:white;border-radius:14px;padding:12px 13px;font-size:14px;outline:none;transition:.15s}textarea{min-height:105px;resize:vertical}.input:focus,select:focus,textarea:focus{border-color:#0ea5e9;box-shadow:0 0 0 4px #e0f2fe}.btn{border:0;border-radius:14px;padding:11px 15px;font-weight:800;cursor:pointer;display:inline-flex;align-items:center;gap:8px;justify-content:center}.btn.primary{background:var(--primary);color:white}.btn.primary:hover{background:var(--primary2)}.btn.outline{background:white;border:1px solid var(--line);color:#334155}.btn.danger{background:#fff;border:1px solid #fecaca;color:var(--danger)}.btn:disabled{opacity:.45;cursor:not-allowed}.toggles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.toggle{display:flex;justify-content:space-between;gap:14px;background:#fff;border:1px solid var(--line);border-radius:18px;padding:14px}.toggle b{font-size:14px}.toggle small{display:block;color:var(--muted);line-height:1.6;margin-top:4px}.toggle input{width:20px;height:20px;accent-color:var(--primary);flex:none}.wan-card{background:#f8fafc;border:1px solid var(--line);border-radius:24px;padding:18px;margin-bottom:14px}.wan-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px}.wan-no{display:flex;align-items:center;gap:10px}.wan-no .circle{width:42px;height:42px;border-radius:16px;background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:900}.summary{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}.pill{border-radius:18px;padding:13px;background:#f0f9ff;border:1px solid #bae6fd}.pill:nth-child(2){background:#ecfdf5;border-color:#bbf7d0}.pill:nth-child(3){background:#f5f3ff;border-color:#ddd6fe}.pill:nth-child(4){background:#fffbeb;border-color:#fde68a}.pill span{display:block;font-size:12px;color:#0369a1}.pill b{display:block;margin-top:4px}.code{width:100%;height:770px;background:#020617;color:#e2e8f0;border:1px solid #1e293b;border-radius:22px;padding:16px;direction:ltr;text-align:left;font-family:Consolas,Monaco,monospace;font-size:13px;line-height:1.55;resize:vertical}.note{border-radius:18px;padding:14px;line-height:1.8;font-size:14px;margin-top:14px}.note.warn{background:#fffbeb;border:1px solid #fde68a;color:#92400e}.note.ok{background:#ecfdf5;border:1px solid #bbf7d0;color:#065f46}.note.info{background:#f8fafc;border:1px solid var(--line);color:#334155}.warn-list{padding:0 18px;margin:8px 0 0}.warn-list li{margin:8px 0;line-height:1.7}.copy-toast{position:fixed;bottom:20px;left:20px;background:#022c22;color:#d1fae5;padding:12px 16px;border-radius:14px;box-shadow:var(--shadow);display:none;z-index:99}.copy-toast.show{display:block}@media(max-width:1100px){.hero-grid,.grid{grid-template-columns:1fr}.stats{max-width:520px}.hero h1{font-size:34px}}@media(max-width:720px){.wrap{padding:14px}.hero{padding:24px}.form-grid,.toggles,.summary,.stats{grid-template-columns:1fr}.card-title{flex-direction:column}.code{height:560px}}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section class="hero">
+      <div class="hero-grid">
+        <div>
+          <div class="badge">⚙️ Advanced MikroTik Script Builder</div>
+          <h1>مولّد سكربت دمج وتوزيع أحمال احترافي</h1>
+          <p>صفحة واحدة تدعم RouterOS v6/v7، أكثر من خط WAN، PCC/Nth/ECMP، Failover، DHCP Dynamic Gateway، الاستثناءات الحساسة، NAT، DNS، وحماية أساسية مع سكربت قابل للنسخ والتحميل.</p>
+        </div>
+        <div class="stats">
+          <div class="stat"><b id="statWan">2</b><span>WAN Lines</span></div>
+          <div class="stat"><b id="statBuckets">2</b><span>Buckets</span></div>
+          <div class="stat"><b id="statRos">v7</b><span>RouterOS</span></div>
+        </div>
+      </div>
+    </section>
+
+    <main class="grid">
+      <section class="card">
+        <div class="card-title">
+          <div><h2>إعدادات السكربت</h2><p>اختر السيناريو المناسب، والسكربت يتغير تلقائياً.</p></div>
+          <button class="btn outline" id="resetBtn">↻ إعادة ضبط</button>
+        </div>
+        <div class="tabs">
+          <button class="tab active" data-tab="basic">الأساسيات</button>
+          <button class="tab" data-tab="wans">الخطوط WAN</button>
+          <button class="tab" data-tab="advanced">متقدم</button>
+          <button class="tab" data-tab="safety">الفحص والتنبيهات</button>
+        </div>
+
+        <div class="section active" id="basic">
+          <div class="form-grid">
+            <label class="field"><span>موديل الراوتر</span><select id="routerModel"></select></label>
+            <label class="field"><span>إصدار النظام</span><select id="routerOs"><option value="v7">RouterOS v7</option><option value="v6">RouterOS v6</option></select></label>
+            <label class="field"><span>طريقة الدمج / التوزيع</span><select id="method"><option value="pcc">PCC - الأفضل لمعظم الحالات</option><option value="nth">Nth - توزيع بسيط</option><option value="ecmp">ECMP - Equal Cost Multi Path</option></select></label>
+            <label class="field"><span>وضع العمل</span><select id="mode"><option value="load-balancing-failover">توزيع أحمال + Failover</option><option value="failover-only">خط أساسي + احتياطي فقط</option></select></label>
+            <label class="field"><span>PCC Classifier</span><select id="pccClassifier"><option value="both-addresses-and-ports">both-addresses-and-ports</option><option value="both-addresses">both-addresses</option><option value="src-address-and-port">src-address-and-port</option><option value="both-ports">both-ports</option></select><span class="hint">both-addresses أكثر ثباتاً، both-addresses-and-ports يوزّع أكثر.</span></label>
+            <label class="field"><span>اسم LAN / Bridge</span><input id="lanName" class="input" /></label>
+            <label class="field"><span>شبكة LAN الرئيسية</span><input id="lanSubnet" class="input" /></label>
+            <label class="field"><span>DNS Preset</span><select id="dnsPreset"><option value="cloudflare">Cloudflare</option><option value="google">Google</option><option value="quad9">Quad9</option><option value="custom">Custom</option></select></label>
+            <label class="field"><span>DNS 1</span><input id="dns1" class="input" /></label>
+            <label class="field"><span>DNS 2</span><input id="dns2" class="input" /></label>
+          </div>
+        </div>
+
+        <div class="section" id="wans">
+          <div class="card-title">
+            <div><h2>خطوط الإنترنت الديناميكية</h2><p>يمكنك تحديد أي عدد من خطوط WAN، وكل خط يمكن أن يكون DHCP/Dynamic أو Static.</p></div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+              <label class="field" style="min-width:150px;margin:0"><span>عدد الخطوط</span><input id="wanCount" type="number" min="1" max="32" class="input" value="2" /></label>
+              <button class="btn outline" id="applyWanCountBtn">تطبيق العدد</button>
+              <button class="btn primary" id="addWanBtn">+ إضافة خط</button>
+            </div>
+          </div>
+          <div class="note info" style="margin-top:0;margin-bottom:14px"><b>ملاحظة:</b> لا يوجد حد ثابت على خطين. يمكنك إضافة 3 أو 4 أو أكثر، وسيتم توليد PCC/Nth/ECMP و DHCP Dynamic Gateway لكل الخطوط حسب العدد الفعلي.</div>
+          <div id="wanList"></div>
+        </div>
+
+        <div class="section" id="advanced">
+          <div class="toggles" id="toggles"></div>
+          <div style="height:18px"></div>
+          <label class="field"><span>الشبكات المحلية التي لا يجب توزيعها</span><textarea id="localSubnets"></textarea><span class="hint">كل شبكة في سطر. مثال: 192.168.0.0/16</span></label>
+          <div style="height:18px"></div>
+          <div class="wan-card">
+            <label class="toggle"><span><b>استثناءات المواقع الحساسة</b><small>للبنوك، VPN، الألعاب، أو الخدمات التي تتضرر من تغيير الخط.</small></span><input type="checkbox" id="enableSensitiveAddressList"></label>
+            <div class="form-grid" style="margin-top:14px">
+              <label class="field"><span>طريقة التعامل</span><select id="sensitiveMode"><option value="force-wan1">إجبارها على WAN1</option><option value="list-only">إنشاء Address List فقط</option></select></label>
+              <label class="field"><span>العناوين أو النطاقات</span><textarea id="sensitiveAddresses" placeholder="example.com&#10;203.0.113.10"></textarea><span class="hint">كل IP/Domain في سطر.</span></label>
+            </div>
+          </div>
+        </div>
+
+        <div class="section" id="safety">
+          <div class="note ok"><b>ملخص التهيئة</b><br><span id="configSummary"></span></div>
+          <div class="note info"><b>قائمة فحص قبل التطبيق</b><ul class="warn-list"><li>تأكد أن أسماء المنافذ مطابقة تماماً لما في WinBox.</li><li>خذ Backup و Export قبل لصق السكربت.</li><li>لا تطبق قواعد الحماية وأنت متصل عن بعد إلا بعد التأكد من السماح للـ LAN أو IP الإدارة.</li><li>مع DHCP، اترك Dynamic Gateway Script مفعلاً.</li><li>لو ظهرت مشاكل في البنوك أو VPN، استخدم both-addresses وأضف العناوين إلى AUTO-LB-SENSITIVE.</li></ul></div>
+          <div id="warningsBox"></div>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-title">
+          <div><h2>السكربت الناتج</h2><p>يبقى فارغاً حتى تضغط زر توليد السكربت، ثم يمكنك نسخه أو تحميله.</p></div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <button class="btn primary" id="generateBtn">⚡ توليد السكربت</button>
+            <button class="btn outline" id="copyBtn" disabled>📋 نسخ السكربت</button>
+            <button class="btn outline" id="downloadBtn" disabled>⬇ تحميل RSC</button>
+          </div>
+        </div>
+        <div class="summary">
+          <div class="pill"><span>النظام</span><b id="sumRos">v7</b></div>
+          <div class="pill"><span>الطريقة</span><b id="sumMethod">PCC</b></div>
+          <div class="pill"><span>الخطوط</span><b id="sumWans">2 WAN</b></div>
+          <div class="pill"><span>التنبيهات</span><b id="sumWarnings">0</b></div>
+        </div>
+        <div id="inlineWarning"></div>
+        <textarea id="scriptOutput" class="code" readonly placeholder="سيظهر السكربت هنا بعد الضغط على زر توليد السكربت..."></textarea>
+        <div class="note info"><b>مهم:</b> الدمج هنا يعني توزيع الاتصالات على الخطوط وليس جمع سرعة الخطين لاتصال واحد. جمع السرعة الحقيقي لاتصال واحد يحتاج حلول Bonding/VPN أو دعم من مزود الخدمة.</div>
+      </section>
+    </main>
+  </div>
+  <div id="toast" class="copy-toast">تم نسخ السكربت بنجاح</div>
+
+<script>
+'use strict';
+const ROUTER_MODELS=['RB750Gr3 hEX','RB760iGS hEX S','RB4011','RB5009','RB1100AHx2','RB1100AHx4','RB1100AHx4 Dude Edition','CCR1009','CCR2004','CCR2116','hAP ac2','hAP ax2','hAP ax3','Custom / Other'];
+const DNS_PRESETS={cloudflare:['1.1.1.1','1.0.0.1'],google:['8.8.8.8','8.8.4.4'],quad9:['9.9.9.9','149.112.112.112'],custom:['','']};
+const CHECK_TARGETS=['1.1.1.1','8.8.8.8','9.9.9.9','208.67.222.222'];
+const toggleDefs=[
+ ['enableDns','ضبط DNS','يضبط DNS على الراوتر مع allow-remote-requests.'],['enableNat','NAT Masquerade','إضافة NAT لكل خط WAN.'],['disableFastTrack','تعطيل FastTrack','مهم مع PCC/Nth حتى لا يتم تجاوز Mangle.'],['enableRecursiveCheck','Recursive Check','مفيد جداً مع Static Gateway لفحص الإنترنت الحقيقي.'],['dynamicGatewayScript','DHCP Dynamic Gateway Script','يحدّث Routes تلقائياً عند تغيّر Gateway لخطوط DHCP.'],['includeDhcpClients','إضافة DHCP Clients','ينشئ DHCP Client للخطوط Dynamic مع add-default-route=no.'],['enableWanInputAccept','قبول Established/Related','يحافظ على الردود والجلسات القائمة.'],['enableBasicProtection','حماية أساسية','اختياري. راجعه قبل التطبيق على راوتر بعيد.'],['includeBackupCommand','أوامر Backup قبل التعديل','ينشئ backup و export قبل تطبيق الإعدادات.'],['includeCleanup','حذف قواعد AUTO-LB القديمة','ينظف قواعد قديمة أنشأها هذا المولّد فقط.'],['includeComments','تعليقات داخل السكربت','يجعل السكربت أوضح وأسهل للمراجعة.'],['enableStickyHttps','HTTPS Stickiness تجريبي','يساعد في تقليل مشاكل بعض الجلسات الحساسة.']
+];
+let state, wans;
+let scriptGenerated=false;
+function defaults(){state={routerModel:'RB750Gr3 hEX',routerOs:'v7',method:'pcc',pccClassifier:'both-addresses-and-ports',mode:'load-balancing-failover',lanName:'bridge1-out',lanSubnet:'192.168.88.0/24',localSubnets:'192.168.88.0/24\n10.0.0.0/8\n172.16.0.0/12\n192.168.0.0/16',dnsPreset:'cloudflare',dns1:'1.1.1.1',dns2:'1.0.0.1',enableDns:true,enableNat:true,disableFastTrack:true,enableRecursiveCheck:true,dynamicGatewayScript:true,enableWanInputAccept:true,enableBasicProtection:false,enableSensitiveAddressList:true,sensitiveMode:'force-wan1',sensitiveAddresses:'',enableStickyHttps:false,includeDhcpClients:true,includeCleanup:false,includeBackupCommand:true,includeComments:true};wans=[{name:'ether1-IN1',type:'dhcp',gateway:'192.168.1.1',weight:'1',priority:'1',checkTarget:'1.1.1.1',comment:'Main WAN'},{name:'ether3-IN2',type:'dhcp',gateway:'192.168.2.1',weight:'1',priority:'2',checkTarget:'8.8.8.8',comment:'Second WAN'}];}
+function $(id){return document.getElementById(id)}
+function linesFrom(raw){return String(raw||'').split(/[\n,]+/).map(x=>x.trim()).filter(Boolean)}
+function lineId(i){return 'wan'+(i+1)}
+function buckets(){const arr=[];wans.forEach((wan,i)=>{const wt=Math.max(1,parseInt(wan.weight||'1',10)||1);for(let j=0;j<wt;j++)arr.push(i)});return arr}
+function c(text){return state.includeComments?['','# '+text]:['']}
+function routeMarked(id,gw){return state.routerOs==='v7'?`/ip route add dst-address=0.0.0.0/0 gateway=${gw} routing-table=to_${id} check-gateway=ping distance=1 comment="AUTO-LB marked route ${id}"`:`/ip route add dst-address=0.0.0.0/0 gateway=${gw} routing-mark=to_${id} check-gateway=ping distance=1 comment="AUTO-LB marked route ${id}"`}
+function dhcpScript(id){return ` script=":local gw \\$\"gateway-address\"; :if ([:len \\$gw] > 0) do={ /ip route set [find comment=\"AUTO-LB marked route ${id}\"] gateway=\\$gw; /ip route set [find comment=\"AUTO-LB main default ${id}\"] gateway=\\$gw; }"`}
+function warnings(){const list=[];const names=wans.map(w=>w.name.trim()).filter(Boolean);if(wans.length<2&&state.mode==='load-balancing-failover')list.push('للتوزيع الحقيقي تحتاج خطين WAN على الأقل. يمكن استخدام خط واحد فقط لأغراض التهيئة أو Failover لاحقاً.');if(new Set(names).size!==names.length)list.push('يوجد تكرار في أسماء منافذ WAN. يجب أن يكون كل منفذ مختلفاً.');if(!state.lanName.trim())list.push('اسم منفذ LAN أو Bridge مطلوب.');if(names.includes(state.lanName.trim()))list.push('منفذ LAN لا يجب أن يكون نفس منفذ WAN.');if(wans.some(w=>w.type==='dhcp')&&!state.dynamicGatewayScript)list.push('يوجد خطوط DHCP بدون سكربت تحديث Gateway. قد تتوقف Routes إذا تغيّر Gateway.');if(state.method==='ecmp'&&state.mode!=='load-balancing-failover')list.push('ECMP مناسب للتوزيع مع Failover، وليس لوضع Failover فقط.');if(buckets().length>16)list.push('عدد Buckets الناتج من الأوزان كبير. يفضّل إبقاؤه بسيطاً.');if(!state.disableFastTrack&&state.method!=='ecmp')list.push('FastTrack قد يتجاوز قواعد Mangle؛ الأفضل تعطيله مع PCC/Nth.');if(state.enableBasicProtection)list.push('قواعد الحماية الأساسية اختيارية. راجعها قبل التطبيق حتى لا تمنع وصولك للراوتر.');return list;}
+function generateScript(){const out=[];const localSubnets=linesFrom(state.localSubnets);const sensitive=linesFrom(state.sensitiveAddresses);const isV7=state.routerOs==='v7',isEcmp=state.method==='ecmp',isFail=state.mode==='failover-only',bal=buckets(),hasStatic=wans.some(w=>w.type==='static'),hasDhcp=wans.some(w=>w.type==='dhcp');out.push('# ============================================================','# MikroTik Advanced Load Balancing Generator',`# Router Model: ${state.routerModel}`,`# RouterOS: ${state.routerOs}`,`# Method: ${state.method.toUpperCase()}`,`# Mode: ${state.mode}`,`# WAN Count: ${wans.length}`,`# LAN: ${state.lanName}`,'# Generated config marker: AUTO-LB','# ============================================================');
+if(state.includeBackupCommand){out.push(...c('Create backup and export before applying changes.'),'/system backup save name=backup-before-auto-lb','/export file=export-before-auto-lb')}
+if(state.includeCleanup){out.push(...c('Cleanup old AUTO-LB rules. Use carefully.'),'/ip firewall mangle remove [find comment~"AUTO-LB"]','/ip firewall nat remove [find comment~"AUTO-LB"]','/ip firewall address-list remove [find comment~"AUTO-LB"]','/ip route remove [find comment~"AUTO-LB"]');if(isV7)out.push('/routing table remove [find comment~"AUTO-LB"]')}
+if(state.disableFastTrack)out.push(...c('Disable FastTrack because PCC/Nth depends on Mangle rules.'),'/ip firewall filter disable [find action=fasttrack-connection]');
+if(state.enableDns)out.push(...c('DNS settings.'),`/ip dns set servers=${state.dns1},${state.dns2} allow-remote-requests=yes`);
+out.push(...c('Address lists for local networks. Traffic to these networks will not be load-balanced.'));localSubnets.forEach(s=>out.push(`/ip firewall address-list add list=AUTO-LB-LOCAL address=${s} comment="AUTO-LB local subnet"`));
+if(state.enableSensitiveAddressList){out.push(...c('Optional sensitive destinations. Add banking/VPN/game servers here if they break with balancing.'));if(sensitive.length)sensitive.forEach(a=>out.push(`/ip firewall address-list add list=AUTO-LB-SENSITIVE address=${a} comment="AUTO-LB sensitive destination"`));else out.push('# Example: /ip firewall address-list add list=AUTO-LB-SENSITIVE address=example.com comment="AUTO-LB sensitive destination"')}
+if(isV7&&!isEcmp){out.push(...c('Routing tables for RouterOS v7.'));wans.forEach((w,i)=>out.push(`/routing table add name=to_${lineId(i)} fib comment="AUTO-LB routing table ${lineId(i)}"`))}
+if(state.enableNat){out.push(...c('NAT masquerade for every WAN.'));wans.forEach((w,i)=>out.push(`/ip firewall nat add chain=srcnat out-interface=${w.name} action=masquerade comment="AUTO-LB NAT ${lineId(i)}"`))}
+if(state.enableWanInputAccept)out.push(...c('Accept established/related input traffic.'),'/ip firewall filter add chain=input connection-state=established,related action=accept comment="AUTO-LB accept established input"','/ip firewall filter add chain=forward connection-state=established,related action=accept comment="AUTO-LB accept established forward"');
+if(state.enableBasicProtection){out.push(...c('Basic protection rules. Review carefully before applying to production.'),'/ip firewall filter add chain=input connection-state=invalid action=drop comment="AUTO-LB drop invalid input"','/ip firewall filter add chain=forward connection-state=invalid action=drop comment="AUTO-LB drop invalid forward"',`/ip firewall filter add chain=input in-interface=${state.lanName} action=accept comment="AUTO-LB allow LAN to router"`);wans.forEach(w=>out.push(`/ip firewall filter add chain=input in-interface=${w.name} action=drop comment="AUTO-LB drop WAN input ${w.name}"`))}
+out.push(...c('Do not mark local destination traffic.'),`/ip firewall mangle add chain=prerouting in-interface=${state.lanName} dst-address-list=AUTO-LB-LOCAL action=accept comment="AUTO-LB bypass local destinations"`,`/ip firewall mangle add chain=prerouting in-interface=${state.lanName} dst-address-type=local action=accept comment="AUTO-LB bypass router local addresses"`);
+if(state.enableSensitiveAddressList&&state.sensitiveMode==='force-wan1'&&!isFail&&!isEcmp){out.push(...c('Force sensitive destinations through WAN1 to avoid session breaks.'),`/ip firewall mangle add chain=prerouting in-interface=${state.lanName} dst-address-list=AUTO-LB-SENSITIVE connection-mark=no-mark action=mark-connection new-connection-mark=wan1_conn passthrough=yes comment="AUTO-LB sensitive force WAN1 connection"`,`/ip firewall mangle add chain=prerouting in-interface=${state.lanName} connection-mark=wan1_conn action=mark-routing new-routing-mark=to_wan1 passthrough=no comment="AUTO-LB sensitive route WAN1"`)}
+if(state.enableStickyHttps&&!isFail&&!isEcmp){out.push(...c('Optional HTTPS stickiness sample.'),`/ip firewall mangle add chain=prerouting in-interface=${state.lanName} protocol=tcp dst-port=443 connection-mark=no-mark dst-address-type=!local per-connection-classifier=both-addresses:${wans.length}/0 action=mark-connection new-connection-mark=wan1_conn passthrough=yes comment="AUTO-LB sticky HTTPS sample"`,'# Add more HTTPS sticky rules manually if you need strict HTTPS distribution per WAN.')}
+if(!isFail&&!isEcmp){if(state.method==='pcc'){out.push(...c('PCC connection marking. Buckets are generated from WAN weights.'));bal.forEach((wi,bi)=>out.push(`/ip firewall mangle add chain=prerouting in-interface=${state.lanName} connection-mark=no-mark dst-address-type=!local per-connection-classifier=${state.pccClassifier}:${bal.length}/${bi} action=mark-connection new-connection-mark=${lineId(wi)}_conn passthrough=yes comment="AUTO-LB PCC ${lineId(wi)} bucket ${bi}"`))}if(state.method==='nth'){out.push(...c('Nth connection marking.'));bal.forEach((wi,bi)=>out.push(`/ip firewall mangle add chain=prerouting in-interface=${state.lanName} connection-mark=no-mark dst-address-type=!local nth=${bal.length},${bi+1} action=mark-connection new-connection-mark=${lineId(wi)}_conn passthrough=yes comment="AUTO-LB NTH ${lineId(wi)} bucket ${bi+1}"`))}out.push(...c('Routing marks based on connection marks.'));wans.forEach((w,i)=>out.push(`/ip firewall mangle add chain=prerouting in-interface=${state.lanName} connection-mark=${lineId(i)}_conn action=mark-routing new-routing-mark=to_${lineId(i)} passthrough=no comment="AUTO-LB route mark ${lineId(i)}"`));out.push(...c('Mark inbound WAN connections so router replies return from the same WAN.'));wans.forEach((w,i)=>{out.push(`/ip firewall mangle add chain=prerouting in-interface=${w.name} connection-mark=no-mark action=mark-connection new-connection-mark=${lineId(i)}_in_conn passthrough=yes comment="AUTO-LB inbound mark ${lineId(i)}"`);out.push(`/ip firewall mangle add chain=output connection-mark=${lineId(i)}_in_conn action=mark-routing new-routing-mark=to_${lineId(i)} passthrough=no comment="AUTO-LB output route ${lineId(i)}"`)})}
+if(state.includeDhcpClients){out.push(...c('DHCP clients. add-default-route=no keeps custom routes controlled.'));wans.forEach((w,i)=>{if(w.type==='dhcp')out.push(`/ip dhcp-client add interface=${w.name} add-default-route=no use-peer-dns=no disabled=no comment="AUTO-LB DHCP ${lineId(i)}"${state.dynamicGatewayScript?dhcpScript(lineId(i)):''}`)})}
+out.push(...c('Routes.'));
+if(state.enableRecursiveCheck&&hasStatic&&!hasDhcp){out.push('# Recursive route check is enabled for static WAN gateways.');wans.forEach((w,i)=>out.push(`/ip route add dst-address=${w.checkTarget||CHECK_TARGETS[i%CHECK_TARGETS.length]} gateway=${w.gateway} scope=10 comment="AUTO-LB check ${lineId(i)}"`))}
+if(isEcmp&&!isFail){out.push(`/ip route add dst-address=0.0.0.0/0 gateway=${wans.map(w=>w.gateway).join(',')} check-gateway=ping distance=1 comment="AUTO-LB ECMP default route"`);wans.forEach((w,i)=>out.push(`/ip route add dst-address=0.0.0.0/0 gateway=${w.gateway} check-gateway=ping distance=${(parseInt(w.priority||i+1,10)||i+1)+10} comment="AUTO-LB ECMP backup ${lineId(i)}"`))}else{wans.forEach((w,i)=>{const id=lineId(i);const gw=(state.enableRecursiveCheck&&hasStatic&&!hasDhcp)?(w.checkTarget||CHECK_TARGETS[i%CHECK_TARGETS.length]):w.gateway;if(!isFail)out.push(routeMarked(id,gw));out.push(`/ip route add dst-address=0.0.0.0/0 gateway=${gw} check-gateway=ping distance=${parseInt(w.priority||i+1,10)||i+1} comment="AUTO-LB main default ${id}"`)})}
+out.push(...c('Operational notes.'),'# PCC/Nth distributes connections; a single download usually uses one WAN only.','# For unstable banking/VPN/game sessions, use PCC classifier both-addresses and force sensitive destinations to WAN1.','# For DHCP lines, keep dynamic gateway script enabled or update gateways manually.','# Always test from a maintenance window, especially on remote routers.');return out.join('\n')}
+function bindBasic(){ROUTER_MODELS.forEach(m=>{const o=document.createElement('option');o.textContent=m;o.value=m;$('routerModel').appendChild(o)});toggleDefs.forEach(([id,label,hint])=>{const el=document.createElement('label');el.className='toggle';el.innerHTML=`<span><b>${label}</b><small>${hint}</small></span><input type="checkbox" id="${id}">`;$('toggles').appendChild(el)});['routerModel','routerOs','method','mode','pccClassifier','lanName','lanSubnet','dnsPreset','dns1','dns2','localSubnets','enableSensitiveAddressList','sensitiveMode','sensitiveAddresses',...toggleDefs.map(x=>x[0])].forEach(id=>{document.addEventListener('input',e=>{if(e.target&&e.target.id===id){setFromDom(id,e.target);clearGenerated();render()}});document.addEventListener('change',e=>{if(e.target&&e.target.id===id){setFromDom(id,e.target);clearGenerated();render()}})});}
+function setFromDom(id,el){if(el.type==='checkbox')state[id]=el.checked;else state[id]=el.value;if(id==='dnsPreset'){const p=DNS_PRESETS[state.dnsPreset]||DNS_PRESETS.cloudflare;if(state.dnsPreset!=='custom'){state.dns1=p[0];state.dns2=p[1];}}}
+function renderWanList(){const list=$('wanList');list.innerHTML='';wans.forEach((w,i)=>{const div=document.createElement('div');div.className='wan-card';div.innerHTML=`<div class="wan-head"><div class="wan-no"><div class="circle">${i+1}</div><div><b>${lineId(i).toUpperCase()}</b><p style="margin:2px 0 0;color:#64748b;font-size:12px">${w.comment||'Internet line'}</p></div></div><button class="btn danger" data-remove="${i}" ${wans.length<=1?'disabled':''}>حذف</button></div><div class="form-grid"><label class="field"><span>اسم المنفذ</span><input class="input" data-wan="${i}" data-key="name" value="${escapeHtml(w.name)}"></label><label class="field"><span>نوع الخط</span><select data-wan="${i}" data-key="type"><option value="dhcp" ${w.type==='dhcp'?'selected':''}>DHCP / Dynamic WAN</option><option value="static" ${w.type==='static'?'selected':''}>Static Gateway</option></select></label><label class="field"><span>Gateway</span><input class="input" data-wan="${i}" data-key="gateway" value="${escapeHtml(w.gateway)}"><span class="hint">مع DHCP/Dynamic يمكن تركه كقيمة أولية، والسكربت يحدّث Routes تلقائياً لكل خط عند التفعيل.</span></label><label class="field"><span>Check Target</span><input class="input" data-wan="${i}" data-key="checkTarget" value="${escapeHtml(w.checkTarget)}"></label><label class="field"><span>Weight / نسبة التوزيع</span><input type="number" min="1" max="10" class="input" data-wan="${i}" data-key="weight" value="${escapeHtml(w.weight)}"></label><label class="field"><span>Priority / أولوية Failover</span><input type="number" min="1" max="20" class="input" data-wan="${i}" data-key="priority" value="${escapeHtml(w.priority)}"></label><label class="field"><span>ملاحظة الخط</span><input class="input" data-wan="${i}" data-key="comment" value="${escapeHtml(w.comment)}"></label></div>`;list.appendChild(div)});}
+function escapeHtml(v){return String(v||'').replaceAll('&','&amp;').replaceAll('"','&quot;').replaceAll('<','&lt;').replaceAll('>','&gt;')}
+function syncDom(){Object.keys(state).forEach(k=>{const el=$(k);if(!el)return;if(el.type==='checkbox')el.checked=!!state[k];else el.value=state[k]});$('pccClassifier').disabled=state.method!=='pcc';$('sensitiveMode').disabled=!state.enableSensitiveAddressList;$('sensitiveAddresses').disabled=!state.enableSensitiveAddressList;}
+function render(){syncDom();renderWanList();const wrn=warnings();$('statWan').textContent=wans.length;$('statBuckets').textContent=buckets().length;$('statRos').textContent=state.routerOs;$('sumRos').textContent=state.routerOs;$('sumMethod').textContent=state.method.toUpperCase();$('sumWans').textContent=wans.length+' WAN';$('sumWarnings').textContent=wrn.length;if($('wanCount'))$('wanCount').value=wans.length;$('configSummary').textContent=`الإعداد الحالي مهيأ لـ ${wans.length} خطوط WAN ديناميكية/ثابتة، طريقة ${state.method.toUpperCase()}، نظام ${state.routerOs}، وعدد Buckets حسب الأوزان: ${buckets().length}.`;$('warningsBox').innerHTML=wrn.length?`<div class="note warn"><b>تنبيهات تحتاج مراجعة</b><ul class="warn-list">${wrn.map(w=>`<li>${w}</li>`).join('')}</ul></div>`:`<div class="note ok">لا توجد تنبيهات واضحة في الإعدادات الحالية.</div>`;$('inlineWarning').innerHTML=wrn.length?`<div class="note warn"><b>تنبيه:</b> يوجد ${wrn.length} ملاحظة في تبويب الفحص. راجعها قبل توليد السكربت.</div>`:'';$('copyBtn').disabled=!scriptGenerated;$('downloadBtn').disabled=!scriptGenerated;}
+function clearGenerated(){scriptGenerated=false;$('scriptOutput').value='';$('copyBtn').disabled=true;$('downloadBtn').disabled=true;}
+function makeDefaultWan(n){return {name:`ether${n}-IN${n}`,type:'dhcp',gateway:`192.168.${n}.1`,weight:'1',priority:String(n),checkTarget:CHECK_TARGETS[(n-1)%CHECK_TARGETS.length],comment:`WAN ${n}`};}
+function setWanCount(count){const target=Math.max(1,Math.min(32,parseInt(count||'2',10)||2));while(wans.length<target)wans.push(makeDefaultWan(wans.length+1));while(wans.length>target)wans.pop();clearGenerated();render();}
+function init(){defaults();bindBasic();document.querySelectorAll('.tab').forEach(btn=>btn.addEventListener('click',()=>{document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));btn.classList.add('active');$(btn.dataset.tab).classList.add('active')}));$('addWanBtn').addEventListener('click',()=>{wans.push(makeDefaultWan(wans.length+1));clearGenerated();render()});$('applyWanCountBtn').addEventListener('click',()=>setWanCount($('wanCount').value));$('wanCount').addEventListener('keydown',e=>{if(e.key==='Enter')setWanCount($('wanCount').value)});$('wanList').addEventListener('input',e=>{const el=e.target;if(el.dataset.wan){wans[Number(el.dataset.wan)][el.dataset.key]=el.value;clearGenerated();render()}});$('wanList').addEventListener('change',e=>{const el=e.target;if(el.dataset.wan){wans[Number(el.dataset.wan)][el.dataset.key]=el.value;clearGenerated();render()}});$('wanList').addEventListener('click',e=>{const btn=e.target.closest('[data-remove]');if(btn&&wans.length>1){wans.splice(Number(btn.dataset.remove),1);clearGenerated();render()}});$('resetBtn').addEventListener('click',()=>{defaults();clearGenerated();render()});$('generateBtn').addEventListener('click',()=>{const wrn=warnings();$('scriptOutput').value=generateScript();scriptGenerated=true;$('copyBtn').disabled=false;$('downloadBtn').disabled=false;render();$('scriptOutput').scrollIntoView({behavior:'smooth',block:'center'});});$('copyBtn').addEventListener('click',async()=>{try{await navigator.clipboard.writeText($('scriptOutput').value)}catch(e){$('scriptOutput').select();document.execCommand('copy')}const t=$('toast');t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1600)});$('downloadBtn').addEventListener('click',()=>{const blob=new Blob([$('scriptOutput').value],{type:'text/plain;charset=utf-8'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='mikrotik-advanced-load-balancing.rsc';a.click();URL.revokeObjectURL(url)});render();}
+document.addEventListener('DOMContentLoaded',init);
+</script>
+</body>
+</html>
