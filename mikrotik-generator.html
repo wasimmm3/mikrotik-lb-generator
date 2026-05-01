@@ -6,6 +6,10 @@
   <title>مولّد سكربت MikroTik Load Balancing</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230f766e'/%3E%3Cpath d='M18 42h28M18 32h20M18 22h28' stroke='%23f8fafc' stroke-width='5' stroke-linecap='round'/%3E%3C/svg%3E">
   <style>
+    html {
+      -webkit-text-size-adjust: 100%;
+    }
+
     :root {
       --bg: #f4f7fb;
       --card: rgba(255, 255, 255, 0.92);
@@ -35,6 +39,7 @@
       min-height: 100vh;
       font-family: var(--font-main);
       color: var(--text);
+      overflow-x: hidden;
       background:
         radial-gradient(circle at 12% 18%, rgba(15, 118, 110, 0.18), transparent 32%),
         radial-gradient(circle at 88% 12%, rgba(245, 158, 11, 0.15), transparent 28%),
@@ -224,6 +229,7 @@
       font-size: 1.45rem;
       font-weight: 800;
       line-height: 1.1;
+      overflow-wrap: anywhere;
     }
 
     .toolbar,
@@ -540,15 +546,27 @@
       .output-card {
         position: static;
       }
+
+      .stats,
+      .summary-strip {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
     }
 
     @media (max-width: 900px) {
       .stats,
-      .summary-strip,
       .section-grid,
       .wan-grid,
       .toggle-grid {
         grid-template-columns: 1fr;
+      }
+
+      .summary-strip {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .stats {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
       }
 
       .hero,
@@ -564,8 +582,7 @@
       }
 
       .toolbar,
-      .hero-actions,
-      .count-row {
+      .hero-actions {
         flex-direction: column;
         align-items: stretch;
       }
@@ -576,6 +593,200 @@
 
       .count-row .field {
         min-width: 0;
+      }
+
+      .count-row {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        align-items: end;
+      }
+
+      .count-row .field {
+        grid-column: 1 / -1;
+      }
+
+      .toolbar {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        width: 100%;
+      }
+
+      .toolbar .btn.primary {
+        grid-column: 1 / -1;
+      }
+
+      .code {
+        min-height: 460px;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .page {
+        padding: 12px;
+      }
+
+      .layout {
+        gap: 16px;
+        margin-top: 16px;
+      }
+
+      .stack {
+        gap: 14px;
+      }
+
+      .hero {
+        padding: 18px;
+        border-radius: 24px;
+      }
+
+      .hero::before {
+        width: 240px;
+        height: 240px;
+        inset-inline-start: -90px;
+        top: -110px;
+      }
+
+      .hero::after {
+        width: 180px;
+        height: 180px;
+        inset-inline-end: -60px;
+        bottom: -80px;
+      }
+
+      .eyebrow {
+        width: 100%;
+        justify-content: center;
+        text-align: center;
+        padding: 9px 12px;
+      }
+
+      .hero h1 {
+        margin: 14px 0 10px;
+        font-size: 1.7rem;
+        line-height: 1.3;
+      }
+
+      .hero p {
+        font-size: 14px;
+        line-height: 1.85;
+      }
+
+      .card {
+        padding: 16px;
+        border-radius: 22px;
+      }
+
+      .card-head {
+        margin-bottom: 14px;
+        gap: 12px;
+      }
+
+      .card h2 {
+        font-size: 20px;
+      }
+
+      .card p {
+        font-size: 13px;
+        line-height: 1.8;
+      }
+
+      .stats,
+      .summary-strip {
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
+
+      .stat-card,
+      .summary-pill {
+        min-height: 0;
+        padding: 14px;
+        border-radius: 18px;
+      }
+
+      .stat-card strong,
+      .summary-pill strong {
+        margin-top: 8px;
+        font-size: 1.15rem;
+      }
+
+      .toolbar,
+      .count-row {
+        grid-template-columns: 1fr;
+      }
+
+      .wan-card {
+        padding: 14px;
+        border-radius: 20px;
+      }
+
+      .wan-index {
+        width: 40px;
+        height: 40px;
+        border-radius: 14px;
+      }
+
+      .wan-meta strong {
+        font-size: 0.95rem;
+      }
+
+      .notice {
+        padding: 14px;
+        border-radius: 18px;
+        font-size: 13px;
+      }
+
+      .warning-list {
+        padding-inline-start: 16px;
+      }
+
+      input,
+      select,
+      textarea {
+        padding: 12px 13px;
+        font-size: 14px;
+      }
+
+      .toggle {
+        padding: 13px 14px;
+        border-radius: 18px;
+      }
+
+      .toggle strong {
+        font-size: 13px;
+      }
+
+      .toggle small,
+      .hint {
+        font-size: 11px;
+      }
+
+      .code {
+        min-height: 340px;
+        padding: 14px;
+        border-radius: 18px;
+        font-size: 12px;
+        line-height: 1.6;
+      }
+
+      .copy-toast {
+        inset-inline-start: 12px;
+        inset-inline-end: 12px;
+        bottom: 12px;
+        text-align: center;
+      }
+    }
+
+    @media (max-width: 420px) {
+      .hero h1 {
+        font-size: 1.55rem;
+      }
+
+      .btn {
+        padding: 11px 14px;
+      }
+
+      .card-kicker {
+        font-size: 11px;
       }
     }
   </style>
